@@ -9,7 +9,8 @@ using shelfT = map<string, map<string, vector<pair<string, int>>>>;
 using sectionT = map<string, vector<pair<string, int>>>;
 using rowT = vector<pair<string, int>>;
 
-auto initStorage(int numZones, int numShelves, int numSections, int numRows) {
+
+storageT initStorage(int numZones, int numShelves, int numSections, int numRows) {
 	rowT row;
 	for (size_t i = 1; i <= 10; i++) {
 		row.push_back({ "Empty", 0 });
@@ -105,7 +106,7 @@ void REMOVE(string productName, int productAmount, string address, map<string, m
 }
 
 
-auto INFO(storageT& storage) {
+void INFO(storageT& storage) {
 	cout << endl << endl << "-------------------- Current info about storage --------------------" << endl << endl;
 	vector<string> emptyCelladdress;
 	vector<string> loadedCelladdress;
@@ -152,6 +153,29 @@ auto INFO(storageT& storage) {
 	
 }
 
+bool AdressCorrect(string address, storageT& storage) {
+	int counter = 0;
+	if (address.substr(0, 1) == "A" || address.substr(0, 1) == "B" || address.substr(0, 1) == "C") {
+		counter += 1;
+	}
+	if (stoi(address.substr(1, 1)) <= 3) {
+		counter += 1;
+	}
+	if (stoi(address.substr(2, 1)) <= 3) {
+		counter += 1;
+	}
+	if (stoi(address.substr(3, 1)) <= 1) {
+		counter += 1;
+	}
+	 
+	if (counter == 4) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 
 int main() {
 
@@ -167,9 +191,8 @@ int main() {
 	cout << "Available commands are: " << endl << endl << "[ INFO ] - to check out the storage " << endl << "[ ADD ] - to add product into storage by format" 
 		<< " ||| PRODUCT NAME - AMOUNT - CELL ADDRESS |||" << endl;
 	cout<< "[ REMOVE ] - to remove product from storage by format ||| PRODUCT NAME - AMOUNT - CELL ADDRESS |||" << endl << "[ END ] - to close the control programm " << endl << endl;
-
+	
 	while (true) {
-		
 		cin >> input;
 		if (input == "END") {
 			break;
@@ -184,18 +207,31 @@ int main() {
 				cout << "--------------------" << endl;
 				
 				cin >> productName >> productAmount >> address;
-				ADD(productName, productAmount, address, zones);
-				break;
+				if (AdressCorrect(address, zones) ){
+					ADD(productName, productAmount, address, zones);
+					break;
+				}
+				else {
+					cout << "Wrong adress input! "<< endl;
+				}
+				
 			case 3:
 				cout << "--------------------" << endl;
 				
 				cin >> productName >> productAmount >> address;
-				REMOVE(productName, productAmount, address, zones);
-				break;
+				if (AdressCorrect(address, zones) ){
+					REMOVE(productName, productAmount, address, zones);
+					break;
+				}
+				else {
+					cout << "Wrong adress input! " << endl;
+					break;
+				}
 			}
 
 		}
 
 	}
+	
 	return 0;
 }
