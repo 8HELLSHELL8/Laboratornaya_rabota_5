@@ -196,41 +196,48 @@ int main() {
 		cin >> input;
 		if (input == "END") {
 			break;
-
 		}
 		else {
-			switch (commands[input]) {
-			case 1:
-				INFO(zones);
-				break;
-			case 2:
-				cout << "--------------------" << endl;
-				
-				cin >> productName >> productAmount >> address;
-				if (AdressCorrect(address, zones) ){
-					ADD(productName, productAmount, address, zones);
+			auto commandIt = commands.find(input);
+			if (commandIt != commands.end()) {
+				switch (commandIt->second) {
+				case 1:
+					INFO(zones);
+					break;
+				case 2:
+				{
+					cout << "--------------------" << endl;
+					string productName, address;
+					int productAmount;
+					cin >> productName >> productAmount >> address;
+					if (AdressCorrect(address, zones)) {
+						ADD(productName, productAmount, address, zones);
+					}
+					else {
+						cout << "Wrong address input!" << endl;
+					}
 					break;
 				}
-				else {
-					cout << "Wrong adress input! "<< endl;
-				}
-				
-			case 3:
-				cout << "--------------------" << endl;
-				
-				cin >> productName >> productAmount >> address;
-				if (AdressCorrect(address, zones) ){
-					REMOVE(productName, productAmount, address, zones);
+				case 3:
+				{
+					cout << "--------------------" << endl;
+					string productName, address;
+					int productAmount;
+					cin >> productName >> productAmount >> address;
+					if (AdressCorrect(address, zones)) {
+						REMOVE(productName, productAmount, address, zones);
+					}
+					else {
+						cout << "Wrong address input!" << endl;
+					}
 					break;
 				}
-				else {
-					cout << "Wrong adress input! " << endl;
-					break;
 				}
 			}
-
+			else {
+				cout << "invalid input!" << endl;
+			}
 		}
-
 	}
 	
 	return 0;
